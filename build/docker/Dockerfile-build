@@ -4,4 +4,4 @@ RUN mkdir -p /go/src/github.com/diltram/go-chat
 ADD . /go/src/github.com/diltram/go-chat
 WORKDIR /go/src/github.com/diltram/go-chat/cmd/go-chat
 RUN gofmt -w .
-RUN CGO_ENABLED=0 GOOS=darwin go build -a -installsuffix cgo -o go-chat --tags appengine .
+RUN CGO_ENABLED=0 GOOS=darwin go build -a -installsuffix cgo -o go-chat .
