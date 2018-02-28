@@ -1,0 +1,49 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "7BsTyiYZMTvIGT/KsF9a3tAoN0g=",
+			"path": "github.com/reiver/go-oi",
+			"revision": "431c83978379297f04f85f6eb94f129f25ab741d",
+			"revisionTime": "2016-03-25T06:16:15Z"
+		},
+		{
+			"checksumSHA1": "sb1kOSRpAu22ovV0dXHkPlG06i4=",
+			"path": "github.com/reiver/go-telnet",
+			"revision": "6b696f32801a8f8dd07947f1e1fdb1a7dc4766ff",
+			"revisionTime": "2016-03-30T05:09:16Z"
+		},
+		{
+			"checksumSHA1": "aqsQc5JsHhr+ykjMKINU0drfjfw=",
+			"path": "github.com/reiver/go-telnet/telsh",
+			"revision": "6b696f32801a8f8dd07947f1e1fdb1a7dc4766ff",
+			"revisionTime": "2016-03-30T05:09:16Z"
+		},
+		{
+			"checksumSHA1": "jvpl+CkbGhNPxhcVUCQ6jLIy2+E=",
+			"path": "github.com/sirupsen/logrus",
+			"revision": "8c0189d9f6bbf301e5d055d34268156b317016af",
+			"revisionTime": "2018-02-13T14:31:10Z"
+		},
+		{
+			"checksumSHA1": "ZD520hil4AYWFhAAG+QcawOjHVM=",
+			"path": "github.com/urfave/cli",
+			"revision": "b09aafdfe9ad3fa4353b82eaed4e80598878c128",
+			"revisionTime": "2018-02-25T03:02:19Z"
+		},
+		{
+			"checksumSHA1": "6U7dCaxxIMjf5V02iWgyAwppczw=",
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": "8c653846df49742c4c85ec37e5d9f8d3ba657895",
+			"revisionTime": "2018-02-19T16:33:59Z"
+		},
+		{
+			"checksumSHA1": "+UMEPHX8wvMkCxa+ofAmBKlqdYg=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "f6cff0780e542efa0c8e864dc8fa522808f6a598",
+			"revisionTime": "2018-02-20T20:26:15Z"
+		}
+	],
+	"rootPath": "github.com/diltram/go-chat"
+}
