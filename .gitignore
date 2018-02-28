@@ -1,2 +1,4 @@
 /go-chat
 coverage.html
+vendor
+!vendor/vendor.json
