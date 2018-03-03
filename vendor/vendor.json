@@ -43,6 +43,12 @@
 			"path": "golang.org/x/sys/unix",
 			"revision": "f6cff0780e542efa0c8e864dc8fa522808f6a598",
 			"revisionTime": "2018-02-20T20:26:15Z"
+		},
+		{
+			"checksumSHA1": "AnKBN2Q4AWaSNb0JyINBQbnpxGM=",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "7f97868eec74b32b0982dd158a51a446d1da7eb5",
+			"revisionTime": "2018-02-23T19:12:37Z"
 		}
 	],
 	"rootPath": "github.com/diltram/go-chat"

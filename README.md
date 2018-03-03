@@ -22,6 +22,7 @@ Project is build using Golang standard project layout taken from [here](https://
 * [cli](https://github.com/urfave/cli) to build nice cli
 * [logrus](https://github.com/sirupsen/logrus) for logging
 * [go-telnet](https://github.com/reiver/go-telnet) for telnet server
+* yaml
 
 ## Problems which I had to solve
 * Understanding embedding ([docs](https://golang.org/doc/effective_go.html#embedding)).
