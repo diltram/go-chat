@@ -40,7 +40,9 @@ func NewDefaultConfig() Configuration {
 	}
 }
 
-func loadConfig(filename string) Configuration {
+//LoadConfig creates new configuration based on the content of specified file.
+//When file doesn't exist or it's unparsable it will use default configuration.
+func LoadConfig(filename string) Configuration {
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Infof("Couldn't open %s configuration file. Using default settings.", filename)
