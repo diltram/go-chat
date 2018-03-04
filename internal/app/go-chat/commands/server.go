@@ -18,7 +18,7 @@ func OnServer(conf config.Configuration) error {
 	handler := handlers.NewShellHandler()
 
 	addr := fmt.Sprintf("%s:%d", conf.Server.IP, conf.Server.Port)
-	log.Info("Starting telnet server on %s", addr)
+	log.Info("Starting telnet server on ", addr)
 
 	if err := telnet.ListenAndServe(addr, handler); nil != err {
 		panic(err)

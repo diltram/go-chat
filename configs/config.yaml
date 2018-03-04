@@ -1,5 +1,5 @@
 ---
 server:
-    ip: '0.0.0.0'
+    ip: "127.0.0.1"
     port: 5555
-    log: 'logs/go-chat.log'
+    log: "logs/go-chat.log"
