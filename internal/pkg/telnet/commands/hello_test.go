@@ -1,21 +1,19 @@
 package commands
 
 import (
-	"io"
+	"bytes"
 	"io/ioutil"
 	"strings"
 	"testing"
 )
 
-type FakeWriter struct {
-	io.WriteCloser
-
-	LastWrite string
+type MyWriteCloser struct {
+	*bytes.Buffer
 }
 
-func (fk FakeWriter) Write(p []byte) (n int, err error) {
-	fk.LastWrite = string(p)
-	return 0, nil
+func (mwc *MyWriteCloser) Close() error {
+	// Noop
+	return nil
 }
 
 func TestProduce(t *testing.T) {
@@ -28,11 +26,15 @@ func TestProduce(t *testing.T) {
 
 func TestCmdHandler(t *testing.T) {
 	cmd := HelloCmd{}
-	writer := new(FakeWriter)
-	cmd.cmdHandler(ioutil.NopCloser(strings.NewReader("")), writer, new(FakeWriter))
+	stdin := ioutil.NopCloser(strings.NewReader(""))
+	stdout := MyWriteCloser{new(bytes.Buffer)}
+	stderr := MyWriteCloser{new(bytes.Buffer)}
 
-	expected := "  Hello!"
-	if writer.LastWrite != expected {
-		t.Errorf("Wrong message returned. Expecting: %s, received: %s", expected, writer.LastWrite)
+	cmd.cmdHandler(stdin, &stdout, &stderr)
+
+	expected := "Hello!"
+	actual := stdout.Buffer.String()
+	if actual != expected {
+		t.Errorf("Wrong message returned. Expecting: %s, received: %s", expected, actual)
 	}
 }

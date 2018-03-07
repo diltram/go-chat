@@ -5,7 +5,6 @@ import (
 
 	"github.com/diltram/go-telnet"
 	"github.com/diltram/go-telnet/telsh"
-	"github.com/reiver/go-oi"
 )
 
 // HelloCmd provides /hello in telnet
@@ -27,7 +26,7 @@ func (cmd HelloCmd) Produce() telsh.ProducerFunc {
 }
 
 func (cmd HelloCmd) cmdHandler(stdin io.ReadCloser, stdout io.WriteCloser, stderr io.WriteCloser, args ...string) error {
-	oi.LongWriteString(stdout, "  Hello!")
+	io.WriteString(stdout, "Hello!")
 
 	return nil
 }
