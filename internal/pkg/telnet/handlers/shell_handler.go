@@ -43,3 +43,30 @@ func (handler *ShellHandlerCommands) registerAllCommands() {
 		handler.Register(cmd.Name(), cmd.Produce())
 	}
 }
+
+func (handler *ShellHandlerCommands) addClient(c net.Conn) {
+	handler.mutex.Lock()
+	defer handler.mutex.Unlock()
+
+	handler.clients[c] = handler.clientsCount
+	log.Debug("Registered new user #", handler.clientsCount)
+	handler.clientsCount++
+}
+
+func (handler *ShellHandlerCommands) removeClient(c net.Conn) {
+	handler.mutex.Lock()
+	defer handler.mutex.Unlock()
+
+	log.Debug("Closing connection with user ", handler.clients[c])
+	delete(handler.clients, c)
+}
+
+func (handler *ShellHandlerCommands) ServeTELNET(ctx telnet.Context,
+	writer telnet.Writer,
+	reader telnet.Reader) {
+
+	handler.addClient(ctx.Conn())
+	defer handler.removeClient(ctx.Conn())
+
+	handler.ShellHandler.ServeTELNET(ctx, writer, reader)
+}
