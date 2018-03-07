@@ -11,6 +11,11 @@ import (
 	"github.com/diltram/go-chat/internal/pkg/telnet/commands"
 )
 
+// ShellHandlerCommands provides base ShellHandler with additional support for
+// clients. Every time when new clients connects it's added into the clients
+// map which then let's us interact with them.
+// Automatically when user disconnetcs he will be deregistered from handler and
+// new messages will not be forwarded to him.
 type ShellHandlerCommands struct {
 	*telsh.ShellHandler
 	clientsCount int
@@ -61,6 +66,8 @@ func (handler *ShellHandlerCommands) removeClient(c net.Conn) {
 	delete(handler.clients, c)
 }
 
+// ServeTELNET registers new connected user and sends request further into
+// go-telnet library to start processing commands.
 func (handler *ShellHandlerCommands) ServeTELNET(ctx telnet.Context,
 	writer telnet.Writer,
 	reader telnet.Reader) {
