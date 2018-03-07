@@ -3,16 +3,16 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "T8gPnkeE03nB2yCoxnpLzS6afqc=",
+			"checksumSHA1": "nRoDhngPMaepFAfVsujdFPgSXT0=",
 			"path": "github.com/diltram/go-telnet",
-			"revision": "9d0197fff774dd251d5989c849fcc69474dd5333",
-			"revisionTime": "2018-03-06T05:03:47Z"
+			"revision": "60a2210ab159498b721fde9da783da5606042512",
+			"revisionTime": "2018-03-07T03:19:13Z"
 		},
 		{
-			"checksumSHA1": "CO+3HjETuVhrstTVqACp7SdxvTE=",
+			"checksumSHA1": "xgnNA9MW09OJNUfQdC8BZO0Dv0g=",
 			"path": "github.com/diltram/go-telnet/telsh",
-			"revision": "9d0197fff774dd251d5989c849fcc69474dd5333",
-			"revisionTime": "2018-03-06T05:03:47Z"
+			"revision": "60a2210ab159498b721fde9da783da5606042512",
+			"revisionTime": "2018-03-07T03:19:13Z"
 		},
 		{
 			"checksumSHA1": "7BsTyiYZMTvIGT/KsF9a3tAoN0g=",
