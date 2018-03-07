@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/diltram/go-chat/internal/pkg/telnet/commands"
+	"github.com/diltram/go-chat/internal/pkg/telnet/context"
 )
 
 // ShellHandlerCommands provides base ShellHandler with additional support for
@@ -72,8 +73,13 @@ func (handler *ShellHandlerCommands) ServeTELNET(ctx telnet.Context,
 	writer telnet.Writer,
 	reader telnet.Reader) {
 
+	chatContext := context.NewContext()
+	chatContext.InjectLogger(ctx.Logger())
+	chatContext.InjectConn(ctx.Conn())
+	chatContext.InjectHandler(handler)
+
 	handler.addClient(ctx.Conn())
 	defer handler.removeClient(ctx.Conn())
 
-	handler.ShellHandler.ServeTELNET(ctx, writer, reader)
+	handler.ShellHandler.ServeTELNET(chatContext, writer, reader)
 }
