@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 
-	"github.com/reiver/go-telnet"
+	"github.com/diltram/go-telnet"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/diltram/go-chat/internal/app/go-chat/config"

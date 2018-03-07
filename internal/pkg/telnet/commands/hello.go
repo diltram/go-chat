@@ -3,9 +3,9 @@ package commands
 import (
 	"io"
 
+	"github.com/diltram/go-telnet"
+	"github.com/diltram/go-telnet/telsh"
 	"github.com/reiver/go-oi"
-	"github.com/reiver/go-telnet"
-	"github.com/reiver/go-telnet/telsh"
 )
 
 //HelloCmd provides /hello in telnet

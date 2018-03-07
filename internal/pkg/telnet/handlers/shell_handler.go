@@ -1,7 +1,11 @@
 package handlers
 
 import (
-	"github.com/reiver/go-telnet/telsh"
+	"net"
+	"sync"
+
+	"github.com/diltram/go-telnet"
+	"github.com/diltram/go-telnet/telsh"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/diltram/go-chat/internal/pkg/telnet/commands"
@@ -9,6 +13,9 @@ import (
 
 type ShellHandlerCommands struct {
 	*telsh.ShellHandler
+	clientsCount int
+	clients      map[net.Conn]int
+	mutex        sync.Mutex
 }
 
 //NewShellHandler creates new handler for telnet server.
@@ -16,7 +23,10 @@ type ShellHandlerCommands struct {
 //required.
 func NewShellHandler() *ShellHandlerCommands {
 	telnetHandler := ShellHandlerCommands{
-		telsh.NewShellHandler(),
+		ShellHandler: telsh.NewShellHandler(),
+		clientsCount: 0,
+		clients:      make(map[net.Conn]int),
+		mutex:        sync.Mutex{},
 	}
 
 	telnetHandler.registerAllCommands()

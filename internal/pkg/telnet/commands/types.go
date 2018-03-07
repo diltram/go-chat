@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/reiver/go-telnet/telsh"
+	"github.com/diltram/go-telnet/telsh"
 )
 
 //CommandsRegistry is a singleton for keeping information about all commands in Telnet.

@@ -4,12 +4,12 @@ import (
 	"io"
 	"testing"
 
+	"github.com/diltram/go-telnet"
+	"github.com/diltram/go-telnet/telsh"
 	"github.com/reiver/go-oi"
-	"github.com/reiver/go-telnet"
-	"github.com/reiver/go-telnet/telsh"
 )
 
-type TestCommand struct {}
+type TestCommand struct{}
 
 func (cmd TestCommand) Name() string {
 	return "/test"
@@ -44,22 +44,22 @@ func TestGetRegistry(t *testing.T) {
 func TestRegisterCmd(t *testing.T) {
 	reg1 := GetRegistry()
 
-	exp_cmds_count := len(reg1.commands) + 1
+	expCount := len(reg1.commands) + 1
 	reg1.RegisterCmd(TestCommand{})
 
-	cmds_count := len(reg1.commands)
-	if cmds_count != exp_cmds_count {
-		t.Errorf("Bad amount of commands registered. Got: %d, expect: %d.", cmds_count, exp_cmds_count)
+	cmdsCount := len(reg1.commands)
+	if cmdsCount != expCount {
+		t.Errorf("Bad amount of commands registered. Got: %d, expect: %d.", cmdsCount, expCount)
 	}
 }
 
 func TestGetAllCmds(t *testing.T) {
 	reg1 := GetRegistry()
 
-	cmds_count := len(reg1.GetAllCmds())
-	exp_count := len(registry.commands)
+	cmdsCount := len(reg1.GetAllCmds())
+	expCount := len(registry.commands)
 
-	if cmds_count != exp_count {
-		t.Errorf("Bad amount of commands registered. Got: %d, expect: %d.", cmds_count, exp_count)
+	if cmdsCount != expCount {
+		t.Errorf("Bad amount of commands registered. Got: %d, expect: %d.", cmdsCount, expCount)
 	}
 }
