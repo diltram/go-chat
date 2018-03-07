@@ -8,20 +8,20 @@ import (
 	"github.com/reiver/go-oi"
 )
 
-//HelloCmd provides /hello in telnet
+// HelloCmd provides /hello in telnet
 type HelloCmd struct{}
 
-//Name provides a name under which command will be available in telnet
+// Name provides a name under which command will be available in telnet
 func (cmd HelloCmd) Name() string {
 	return "/hello"
 }
 
-//Description provides a long description which will be used for help in telnet
+// Description provides a long description which will be used for help in telnet
 func (cmd HelloCmd) Description() string {
 	return ""
 }
 
-//Produce exposes command in format required by telnet library
+// Produce exposes command in format required by telnet library
 func (cmd HelloCmd) Produce() telsh.ProducerFunc {
 	return telsh.ProducerFunc(cmd.cmdProducer)
 }

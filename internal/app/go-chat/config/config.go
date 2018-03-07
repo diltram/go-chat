@@ -13,23 +13,23 @@ const (
 	defaultLog  = "logs/go-chat.log"
 )
 
-//Server configuration structure.
+// Server configuration structure.
 type Server struct {
-	//IP speficies address on which server will listen
+	// IP speficies address on which server will listen
 	IP string `yaml:"ip"`
-	//Port specifies port on which server will listen
+	// Port specifies port on which server will listen
 	Port uint16 `yaml:"port"`
-	//Log points to exact file which will be used to store all logs
+	// Log points to exact file which will be used to store all logs
 	Log string `yaml:"log"`
 }
 
-//Configuration structure which handle complete settings.
+// Configuration structure which handle complete settings.
 type Configuration struct {
-	//Server holds configuration specific for telnet server
+	// Server holds configuration specific for telnet server
 	Server Server `yaml:"server"`
 }
 
-//NewDefaultConfig initializes configuration with default values.
+// NewDefaultConfig initializes configuration with default values.
 func NewDefaultConfig() Configuration {
 	return Configuration{
 		Server{
@@ -40,8 +40,8 @@ func NewDefaultConfig() Configuration {
 	}
 }
 
-//LoadConfig creates new configuration based on the content of specified file.
-//When file doesn't exist or it's unparsable it will use default configuration.
+// LoadConfig creates new configuration based on the content of specified file.
+// When file doesn't exist or it's unparsable it will use default configuration.
 func LoadConfig(filename string) Configuration {
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {

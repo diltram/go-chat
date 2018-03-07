@@ -18,9 +18,9 @@ type ShellHandlerCommands struct {
 	mutex        sync.Mutex
 }
 
-//NewShellHandler creates new handler for telnet server.
-//All available commands will be automatically registered so no others steps
-//required.
+// NewShellHandler creates new handler for telnet server.
+// All available commands will be automatically registered so no others steps
+// required.
 func NewShellHandler() *ShellHandlerCommands {
 	telnetHandler := ShellHandlerCommands{
 		ShellHandler: telsh.NewShellHandler(),

@@ -10,7 +10,7 @@ import (
 	"github.com/diltram/go-chat/internal/pkg/telnet/handlers"
 )
 
-//OnServer implements the 'server' go-chat command
+// OnServer implements the 'server' go-chat command
 func OnServer(conf config.Configuration) error {
 	log.Info("Starting go-chat telnet server")
 
