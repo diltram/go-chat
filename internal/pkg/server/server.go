@@ -16,7 +16,10 @@ type Server interface {
 	// service goroutine for each. The service goroutines read requests and
 	// then call handler to reply to them.
 	Serve(l net.Listener) error
-	//handle(c net.Conn, handler Handler)
+	// Handle begins handling of new connection. That method pre-configures all
+	// required data and registers new connection in Chat structure. As the
+	// last step it sends request to Handler to process request.
+	Handle(c net.Conn)
 	//Shutdown gracefully shuts down the server.
 	Shutdown(ctx context.Context) error
 	// Stop server without graceful awaiting for any operations to complete.
