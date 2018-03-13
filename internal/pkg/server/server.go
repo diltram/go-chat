@@ -16,8 +16,8 @@ type Server interface {
 	// service goroutine for each. The service goroutines read requests and
 	// then call handler to reply to them.
 	Serve(l net.Listener) error
-	//handle(c net.Conn, handler Handler) Shutdown gracefully shuts down the
-	//server.
+	//handle(c net.Conn, handler Handler)
+	//Shutdown gracefully shuts down the server.
 	Shutdown(ctx context.Context) error
 	// Stop server without graceful awaiting for any operations to complete.
 	Close() error
