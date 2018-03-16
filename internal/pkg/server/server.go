@@ -19,7 +19,7 @@ type Server interface {
 	// Handle begins handling of new connection. That method pre-configures all
 	// required data and registers new connection in Chat structure. As the
 	// last step it sends request to Handler to process request.
-	Handle(c net.Conn)
+	Handle(ctx context.Context, c net.Conn)
 	//Shutdown gracefully shuts down the server.
 	Shutdown(ctx context.Context) error
 	// Stop server without graceful awaiting for any operations to complete.
