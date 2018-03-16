@@ -143,8 +143,8 @@ func (cs *ChatServer) Handle(ctx context.Context, c net.Conn) {
 	// User disconnected. Send info about that
 	log.Debugf("Closing connection from %q.", c.RemoteAddr())
 	chatInst.Channels()["default"].DelUser(usr)
-	msg := defaultChannel.AddMessage(usr, fmt.Sprintf("User %s disconnected from channel %s\r\n", usr.Name(), defaultChannel.Name()))
-	defaultChannel.Notify(usr, msg)
+	msg := defaultChannel.AddNotification(usr, fmt.Sprintf("User %s disconnected from channel %s\r\n", usr.Name(), defaultChannel.Name()))
+	defaultChannel.SendMessage(usr, msg)
 }
 
 // Shutdown gracefully shut downs the server.

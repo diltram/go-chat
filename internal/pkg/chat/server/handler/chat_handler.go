@@ -58,8 +58,8 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 	chann := chatInst.Channels()["default"]
 
 	// Send notification about new user
-	msg := chann.AddMessage(usr, fmt.Sprintf("User %s connected to channel %s\r\n", usr.Name(), chann.Name()))
-	chann.Notify(usr, msg)
+	msg := chann.AddNotification(usr, fmt.Sprintf("User %s connected to channel %s\r\n", usr.Name(), chann.Name()))
+	chann.SendMessage(usr, msg)
 
 	// Say hello to new user
 	io.WriteString(writer, chatInst.WelcomeMessage())
@@ -100,8 +100,8 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 				// Change nick of user
 				oldNick := usr.Name()
 				usr.SetName(strings.Join(fields[1:], " "))
-				msg := chann.AddMessage(usr, fmt.Sprintf("User %s changed his nick to %s\r\n", oldNick, usr.Name()))
-				chann.Notify(usr, msg)
+				msg := chann.AddNotification(usr, fmt.Sprintf("User %s changed his nick to %s\r\n", oldNick, usr.Name()))
+				chann.SendMessage(usr, msg)
 			} else {
 				// Let's send message to other users
 				msg := chann.AddMessage(usr, cmdLine.String())
