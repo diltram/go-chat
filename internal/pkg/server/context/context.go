@@ -9,4 +9,5 @@ package context
 type Context interface {
 	SetAttribute(name string, attr interface{}) error
 	Attribute(name string) (interface{}, error)
+	Clone() Context
 }

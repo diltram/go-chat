@@ -60,3 +60,18 @@ func (ctx *ServerContext) Attribute(name string) (interface{}, error) {
 
 	return attr, nil
 }
+
+// Clone returns deep copy of the context.
+//
+// That copy is used to provide context to all the users with their data.
+func (ctx *ServerContext) Clone() Context {
+	attrs := make(map[string]interface{})
+
+	for k, v := range ctx.attrs {
+		attrs[k] = v
+	}
+
+	return &ServerContext{
+		attrs: attrs,
+	}
+}
