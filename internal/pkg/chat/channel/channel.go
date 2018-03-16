@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/diltram/go-chat/internal/pkg/chat/message"
-	"github.com/diltram/go-chat/internal/pkg/chat/user"
+	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
 // Call represents a function which can be provided to Call method.

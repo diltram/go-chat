@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/diltram/go-chat/internal/pkg/chat/user"
+	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
 func TestString(t *testing.T) {

@@ -9,10 +9,10 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/diltram/go-chat/internal/pkg/chat"
-	"github.com/diltram/go-chat/internal/pkg/chat/user"
 	"github.com/diltram/go-chat/internal/pkg/server"
 	"github.com/diltram/go-chat/internal/pkg/server/context"
 	"github.com/diltram/go-chat/internal/pkg/server/handler"
+	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
 // ListenAndServe allows in one command to create a server and start it on

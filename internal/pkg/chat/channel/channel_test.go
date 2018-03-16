@@ -7,8 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	//"github.com/diltram/go-chat/internal/pkg/chat/message"
-	"github.com/diltram/go-chat/internal/pkg/chat/user"
+	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
 func TestAddDelUsers(t *testing.T) {

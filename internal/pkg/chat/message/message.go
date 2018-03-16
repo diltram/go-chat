@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/diltram/go-chat/internal/pkg/chat/user"
+	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
 // Message represents one message sent by user on the chat.
