@@ -13,6 +13,7 @@ import (
 // other required data.
 type User struct {
 	io.Writer
+	io.Reader
 	conn net.Conn // connection
 	name string   // nickname
 }
@@ -34,6 +35,10 @@ func (u *User) SetName(name string) {
 
 func (u *User) Write(p []byte) (n int, err error) {
 	return u.Conn().(io.Writer).Write(p)
+}
+
+func (u *User) Read(p []byte) (n int, err error) {
+	return u.Conn().(io.Reader).Read(p)
 }
 
 // NewUser creates a new user with specified connection and nickname.
