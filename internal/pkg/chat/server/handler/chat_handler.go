@@ -8,7 +8,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/diltram/go-chat/internal/pkg/chat/channel"
+	"github.com/diltram/go-chat/internal/pkg/chat/command"
 	"github.com/diltram/go-chat/internal/pkg/chat/context"
 	"github.com/diltram/go-chat/internal/pkg/server/context"
 	"github.com/diltram/go-chat/internal/pkg/server/handler"
@@ -43,12 +43,12 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 	chann := usrCtx.Channel()
 
 	// Send notification about new user
-	msg := chann.AddNotification(usr, fmt.Sprintf("User %s connected to channel %s\r\n", usr.Name(), chann.Name()))
+	msg := chann.AddNotification(usr, fmt.Sprintf("User %s connected to channel %s", usr.Name(), chann.Name()))
 	chann.SendMessage(usr, msg)
 
 	// Say hello to new user
-	io.WriteString(writer, chatInst.WelcomeMessage())
-	io.WriteString(writer, fmt.Sprintf("Nick %s, welcome in a channel %s. There is %d other users\r\n", usr.Name(), chann.Name(), len(chann.Users())-1))
+	io.WriteString(usr, chatInst.WelcomeMessage())
+	io.WriteString(usr, fmt.Sprintf("Nick %s, welcome in a channel %s. There is %d other users\r\n", usr.Name(), chann.Name(), len(chann.Users())-1))
 
 	// Main handler loop
 	for {
@@ -79,39 +79,13 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 			log.Debugf("Found %d tokens: %v", len(fields), fields)
 
 			if fields[0] == h.ExitCommandName {
-				io.WriteString(writer, chatInst.ExitMessage())
+				io.WriteString(usr, chatInst.ExitMessage())
 				break
-			} else if fields[0] == "/nick" {
-				// Change nick of user
-				oldNick := usr.Name()
-				usr.SetName(strings.Join(fields[1:], " "))
-				msg := chann.AddNotification(usr, fmt.Sprintf("User %s changed his nick to %s\r\n", oldNick, usr.Name()))
-				chann.SendMessage(usr, msg)
-			} else if fields[0] == "/channel" {
-				// Change to different channel
-				name := strings.Join(fields[1:], " ")
-				newChan, ok := chatInst.Channels()[name]
-
-				if !ok {
-					io.WriteString(writer, "Specified channel doesn't exist. Creating...\r\n")
-					newChan = channel.NewChannel(name)
-					chatInst.AddChannel(newChan)
-				}
-
-				msg = chann.AddNotification(usr, fmt.Sprintf("User %s left channel\r\n", usr.Name()))
-				chann.SendMessage(usr, msg)
-				chann.DelUser(usr)
-				newChan.AddUser(usr)
-				chann = newChan
-				msg = chann.AddNotification(usr, fmt.Sprintf("User %s joined channel\r\n", usr.Name()))
-				chann.SendMessage(usr, msg)
-			} else {
-				// Let's send message to other users
-				msg := chann.AddMessage(usr, cmdLine.String())
-				chann.SendMessage(usr, msg)
 			}
-		}
 
+			cmd := command.GetRegistry().Command(fields[0])
+			cmd.Call(usrCtx, fields, cmdLine)
+		}
 		cmdLine.Reset()
 	}
 }
@@ -144,7 +118,7 @@ func (h ChatHandler) writeBuf(line *bytes.Buffer, buf []byte) {
 	writeTo := bytes.Index(buf, []byte(lineEnd))
 
 	if writeTo > 0 {
-		line.Write(buf[:writeTo+2])
+		line.Write(buf[:writeTo])
 	} else {
 		line.Write(buf)
 	}
