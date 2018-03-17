@@ -17,11 +17,16 @@ type Chat struct {
 
 // NewChat creates new instance of a chat.
 func NewChat() *Chat {
-	return &Chat{
+	chat := &Chat{
 		channels:       make(map[string]*channel.Channel),
 		welcomeMessage: "\r\nHello!\r\n",
 		exitMessage:    "\r\nGoodbye!\r\n",
 	}
+
+	chann := channel.NewChannel(channel.DefaultChannelName)
+	chat.AddChannel(chann)
+
+	return chat
 }
 
 // WelcomeMessage returns message which every user will see after connecting to

@@ -7,7 +7,6 @@ import (
 
 	"github.com/diltram/go-chat/internal/app/go-chat/config"
 	"github.com/diltram/go-chat/internal/pkg/chat"
-	"github.com/diltram/go-chat/internal/pkg/chat/channel"
 	"github.com/diltram/go-chat/internal/pkg/chat/server"
 	"github.com/diltram/go-chat/internal/pkg/chat/server/handler"
 	"github.com/diltram/go-chat/internal/pkg/server/context"
@@ -23,9 +22,6 @@ func OnServer(conf config.Configuration) error {
 	log.Info("Starting telnet server on ", addr)
 
 	chat := chat.NewChat()
-	chann := channel.NewChannel(channel.DefaultChannelName)
-	chat.AddChannel(chann)
-
 	ctx := context.NewContext()
 	ctx.SetAttribute("chat", chat)
 
