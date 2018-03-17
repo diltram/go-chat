@@ -7,7 +7,7 @@ package context
 // For example you via context you can provide access to Chat structure with
 // access to all clients and channels created.
 type Context interface {
-	SetAttribute(name string, attr interface{}) error
+	SetAttribute(name string, attr interface{})
 	Attribute(name string) (interface{}, error)
 	Clone() Context
 }

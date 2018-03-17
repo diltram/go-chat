@@ -64,14 +64,10 @@ func TestDoubleSet(t *testing.T) {
 	ctx := NewContext()
 
 	ctx.SetAttribute(name, value1)
-	err := ctx.SetAttribute(name, value2)
+	ctx.SetAttribute(name, value2)
 
-	attr, _ := ctx.Attribute(name)
-	if attr != value1 {
+	attr := ctx.Attribute(name)
+	if attr != value2 {
 		t.Errorf("SetAttribute(): expected: %s, actual: %s", value1, attr)
-	}
-
-	if err != ErrAttrExist {
-		t.Error("Attribute already exists, should fail")
 	}
 }

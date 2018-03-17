@@ -33,16 +33,10 @@ func NewContext() Context {
 // When attribute already exists in context operation will return error.
 // All attrs when created then they've to be updated, never replaced with
 // other.
-func (ctx *ServerContext) SetAttribute(name string, attr interface{}) error {
+func (ctx *ServerContext) SetAttribute(name string, attr interface{}) {
 	ctx.mutex.Lock()
 	defer ctx.mutex.Unlock()
-
-	if _, ok := ctx.attrs[name]; ok == true {
-		return ErrAttrExist
-	}
-
 	ctx.attrs[name] = attr
-	return nil
 }
 
 // Attribute returns attribute with specified name.
