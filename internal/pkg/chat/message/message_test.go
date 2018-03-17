@@ -19,13 +19,13 @@ func TestString(t *testing.T) {
 			"user",
 			"Hey!!!",
 			time.Date(2018, time.March, 18, 10, 0, 0, 0, time.UTC),
-			"10/18/2018 10:00:00 | user - Hey!!!",
+			"10/18/2018 10:00:00 | user - Hey!!!\r\n",
 		},
 		{
 			"john",
 			"How are you brother?",
 			time.Date(2018, time.January, 1, 1, 0, 0, 0, time.UTC),
-			"01/1/2018 01:00:00 | john - How are you brother?",
+			"01/1/2018 01:00:00 | john - How are you brother?\r\n",
 		},
 	}
 

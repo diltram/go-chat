@@ -42,7 +42,7 @@ func TestCall(t *testing.T) {
 	user1 := user.NewUser(conn1, expected)
 	chat.AddUser(user1)
 
-	fn := func(conn net.Conn, usr *user.User) {
+	fn := func(usr *user.User) {
 		called = usr.Name()
 	}
 

@@ -66,8 +66,12 @@ func TestDoubleSet(t *testing.T) {
 	ctx.SetAttribute(name, value1)
 	ctx.SetAttribute(name, value2)
 
-	attr := ctx.Attribute(name)
+	attr, err := ctx.Attribute(name)
 	if attr != value2 {
 		t.Errorf("SetAttribute(): expected: %s, actual: %s", value1, attr)
+	}
+
+	if err != nil {
+		t.Error("Loading attribute should be successful")
 	}
 }
