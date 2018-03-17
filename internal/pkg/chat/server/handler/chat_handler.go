@@ -8,6 +8,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/diltram/go-chat/internal/pkg/chat/channel"
 	"github.com/diltram/go-chat/internal/pkg/chat/context"
 	"github.com/diltram/go-chat/internal/pkg/server/context"
 	"github.com/diltram/go-chat/internal/pkg/server/handler"
@@ -88,7 +89,22 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 				chann.SendMessage(usr, msg)
 			} else if fields[0] == "/channel" {
 				// Change to different channel
-				//name := strings.Join(fields[1:], " "))
+				name := strings.Join(fields[1:], " ")
+				newChan, ok := chatInst.Channels()[name]
+
+				if !ok {
+					io.WriteString(writer, "Specified channel doesn't exist. Creating...\r\n")
+					newChan = channel.NewChannel(name)
+					chatInst.AddChannel(newChan)
+				}
+
+				msg = chann.AddNotification(usr, fmt.Sprintf("User %s left channel\r\n", usr.Name()))
+				chann.SendMessage(usr, msg)
+				chann.DelUser(usr)
+				newChan.AddUser(usr)
+				chann = newChan
+				msg = chann.AddNotification(usr, fmt.Sprintf("User %s joined channel\r\n", usr.Name()))
+				chann.SendMessage(usr, msg)
 			} else {
 				// Let's send message to other users
 				msg := chann.AddMessage(usr, cmdLine.String())
@@ -97,8 +113,6 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 		}
 
 		cmdLine.Reset()
-		// Write nickname of user. Disabled as looks crappy :/
-		//io.WriteString(writer, fmt.Sprintf("%s: ", usr.Name()))
 	}
 }
 
