@@ -29,7 +29,7 @@ func NewChatHandler() handler.Handler {
 	}
 }
 
-func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Reader) {
+func (h *ChatHandler) Serve(ctx context.Context) {
 	buf := make([]byte, 50)
 	cmdLine := new(bytes.Buffer)
 
@@ -52,9 +52,7 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 
 	// Main handler loop
 	for {
-		n, err := reader.Read(buf)
-		//log.Debugf("Received new command: %q", buf)
-
+		n, err := usr.Read(buf)
 		if n <= 0 && err == nil {
 			// Nothing to do, let's check again
 			continue

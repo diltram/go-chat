@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"io"
 	"net"
 	"time"
 
@@ -125,10 +124,7 @@ func (cs *ChatServer) Handle(ctx context.Context, c net.Conn) {
 	defaultChannel := chatInst.Channels()[channel.DefaultChannelName]
 	usrCtx := cs.getUserCtx(ctx, c, defaultChannel)
 
-	writer := c.(io.Writer)
-	reader := c.(io.Reader)
-
-	cs.handler.Serve(usrCtx, writer, reader)
+	cs.handler.Serve(usrCtx)
 
 	// User disconnected. Send info about that
 	log.Debugf("Closing connection from %q.", c.RemoteAddr())
