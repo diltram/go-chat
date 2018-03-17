@@ -10,10 +10,9 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/diltram/go-chat/internal/pkg/chat"
+	"github.com/diltram/go-chat/internal/pkg/chat/context"
 	"github.com/diltram/go-chat/internal/pkg/server/context"
 	"github.com/diltram/go-chat/internal/pkg/server/handler"
-	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
 const (
@@ -35,27 +34,14 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 	buf := make([]byte, 50)
 	cmdLine := new(bytes.Buffer)
 
-	attr, err := ctx.Attribute("chat")
-	if err != nil {
-		panic(err)
+	usrCtx, ok := ctx.(*usrctx.UserContext)
+	if !ok {
+		panic("Provided context is wrong. Should be UserContext")
 	}
 
-	chatInst, ok := attr.(*chat.Chat)
-	if ok == false {
-		panic("Chat instance is not available")
-	}
-
-	attr, err = ctx.Attribute("user")
-	if err != nil {
-		panic(err)
-	}
-
-	usr, ok := attr.(*user.User)
-	if ok == false {
-		panic("User instance is not available")
-	}
-
-	chann := chatInst.Channels()["default"]
+	chatInst := usrCtx.Chat()
+	usr := usrCtx.User()
+	chann := usrCtx.Channel()
 
 	// Send notification about new user
 	msg := chann.AddNotification(usr, fmt.Sprintf("User %s connected to channel %s\r\n", usr.Name(), chann.Name()))
@@ -102,6 +88,9 @@ func (h *ChatHandler) Serve(ctx context.Context, writer io.Writer, reader io.Rea
 				usr.SetName(strings.Join(fields[1:], " "))
 				msg := chann.AddNotification(usr, fmt.Sprintf("User %s changed his nick to %s\r\n", oldNick, usr.Name()))
 				chann.SendMessage(usr, msg)
+			} else if fields[0] == "/channel" {
+				// Change to different channel
+				//name := strings.Join(fields[1:], " "))
 			} else {
 				// Let's send message to other users
 				msg := chann.AddMessage(usr, cmdLine.String())

@@ -9,6 +9,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/diltram/go-chat/internal/pkg/chat"
+	"github.com/diltram/go-chat/internal/pkg/chat/channel"
+	"github.com/diltram/go-chat/internal/pkg/chat/context"
 	"github.com/diltram/go-chat/internal/pkg/server"
 	"github.com/diltram/go-chat/internal/pkg/server/context"
 	"github.com/diltram/go-chat/internal/pkg/server/handler"
@@ -119,6 +121,23 @@ func (cs *ChatServer) Handle(ctx context.Context, c net.Conn) {
 		cs.handler = handler.EchoHandler{}
 	}
 
+	chatInst := cs.getChat(ctx)
+	defaultChannel := chatInst.Channels()["default"]
+	usrCtx := cs.getUserCtx(ctx, c, defaultChannel)
+
+	writer := c.(io.Writer)
+	reader := c.(io.Reader)
+
+	cs.handler.Serve(usrCtx, writer, reader)
+
+	// User disconnected. Send info about that
+	log.Debugf("Closing connection from %q.", c.RemoteAddr())
+	usrCtx.Channel().DelUser(usrCtx.User())
+	msg := usrCtx.Channel().AddNotification(usrCtx.User(), fmt.Sprintf("User %s disconnected from channel %s\r\n", usrCtx.User().Name(), usrCtx.Channel().Name()))
+	usrCtx.Channel().SendMessage(usrCtx.User(), msg)
+}
+
+func (cs ChatServer) getChat(ctx context.Context) *chat.Chat {
 	attr, err := ctx.Attribute("chat")
 	if err != nil {
 		panic(err)
@@ -129,22 +148,17 @@ func (cs *ChatServer) Handle(ctx context.Context, c net.Conn) {
 		panic("Chat instance is not available")
 	}
 
-	defaultChannel := chatInst.Channels()["default"]
+	return chatInst
+}
+
+func (cs *ChatServer) getUserCtx(ctx context.Context, c net.Conn, ch *channel.Channel) *usrctx.UserContext {
 	usr := user.NewUser(c, "")
-	defaultChannel.AddUser(usr)
-	usrCtx := cs.ctx.Clone()
+	ch.AddUser(usr)
+	usrCtx := &usrctx.UserContext{cs.ctx.Clone()}
 	usrCtx.SetAttribute("user", usr)
+	usrCtx.SetAttribute("channel", ch)
 
-	writer := c.(io.Writer)
-	reader := c.(io.Reader)
-
-	cs.handler.Serve(usrCtx, writer, reader)
-
-	// User disconnected. Send info about that
-	log.Debugf("Closing connection from %q.", c.RemoteAddr())
-	chatInst.Channels()["default"].DelUser(usr)
-	msg := defaultChannel.AddNotification(usr, fmt.Sprintf("User %s disconnected from channel %s\r\n", usr.Name(), defaultChannel.Name()))
-	defaultChannel.SendMessage(usr, msg)
+	return usrCtx
 }
 
 // Shutdown gracefully shut downs the server.
