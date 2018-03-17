@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"sort"
 	"strings"
 
 	"github.com/diltram/go-chat/internal/pkg/chat/context"
@@ -27,21 +28,28 @@ func (cmd HelpCommand) Cmds() []string {
 }
 
 func (cmd HelpCommand) Call(ctx *usrctx.UserContext, fields []string, cmdLine *bytes.Buffer) {
-	unqCmds := make(map[Command]bool)
+	unqCmds := make(map[string]Command)
+	unqNames := make([]string, 3)
 	usr := ctx.User()
 	commands := GetRegistry().Commands()
 
 	io.WriteString(usr, "\r\nHelp:\r\n")
 	io.WriteString(usr, "--------------------\r\n")
 
-	// Convert standard map into unique map of commands
 	for _, v := range commands {
-		unqCmds[v] = true
+		if _, ok := unqCmds[v.Name()]; !ok {
+			unqNames = append(unqNames, v.Name())
+			unqCmds[v.Name()] = v
+		}
 	}
 
-	for cmd, _ := range unqCmds {
-		line := fmt.Sprintf("%20s %15s %s\r\n", strings.Join(cmd.Cmds(), ", "), cmd.Name(), cmd.Desc())
-		io.WriteString(usr, line)
+	sort.Strings(unqNames)
+	for _, name := range unqNames {
+		cmd, ok := unqCmds[name]
+		if ok {
+			line := fmt.Sprintf("%20s %15s %s\r\n", strings.Join(cmd.Cmds(), ", "), cmd.Name(), cmd.Desc())
+			io.WriteString(usr, line)
+		}
 	}
 }
 
