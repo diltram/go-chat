@@ -2,6 +2,7 @@ package user
 
 import (
 	"fmt"
+	"io"
 	"math/rand"
 	"net"
 )
@@ -11,6 +12,7 @@ import (
 // It keeps information about the name of the user, his connection and any
 // other required data.
 type User struct {
+	io.Writer
 	conn net.Conn // connection
 	name string   // nickname
 }
@@ -28,6 +30,10 @@ func (u *User) Name() string {
 // SetName allows to change user's nickname.
 func (u *User) SetName(name string) {
 	u.name = name
+}
+
+func (u *User) Write(p []byte) (n int, err error) {
+	return u.Conn().(io.Writer).Write(p)
 }
 
 // NewUser creates a new user with specified connection and nickname.
