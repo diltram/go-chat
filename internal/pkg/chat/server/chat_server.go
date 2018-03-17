@@ -136,7 +136,7 @@ func (cs *ChatServer) Handle(ctx context.Context, c net.Conn) {
 	msg := usrCtx.Channel().AddNotification(
 		usrCtx.User(),
 		fmt.Sprintf(
-			"User %s disconnected from channel %s\r\n",
+			"User %s disconnected from channel %s",
 			usrCtx.User().Name(),
 			usrCtx.Channel().Name()))
 	usrCtx.Channel().SendMessage(usrCtx.User(), msg)
