@@ -59,8 +59,8 @@ func (c *Chat) SetExitMessage(msg string) {
 }
 
 func (c *Chat) AddChannel(chann *channel.Channel) {
-	c.mutex.RLock()
-	defer c.mutex.RUnlock()
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
 
 	c.channels[chann.Name()] = chann
 }
