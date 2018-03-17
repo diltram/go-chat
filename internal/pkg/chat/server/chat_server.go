@@ -16,23 +16,8 @@ import (
 	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
-// ListenAndServe allows in one command to create a server and start it on
-// specified address.
-func ListenAndServe(addr string) error {
-	srv := NewServer(addr, context.NewContext())
-	return srv.ListenAndServe()
-}
-
-// NewServer creates new ChatServer with specified address to listen on.
-func NewServer(addr string, ctx context.Context) server.Server {
-	return &ChatServer{
-		Addr: addr,
-		ctx:  ctx,
-	}
-}
-
-// NewServerHandler creates new ChatServer with specified address to listen on.
-func NewServerHandler(addr string, h handler.Handler, ctx context.Context) server.Server {
+// NewServercreates new ChatServer with specified address to listen on.
+func NewServer(addr string, h handler.Handler, ctx context.Context) server.Server {
 	return &ChatServer{
 		Addr:    addr,
 		ctx:     ctx,
@@ -116,8 +101,7 @@ func (cs *ChatServer) Handle(ctx context.Context, c net.Conn) {
 	}
 
 	if cs.handler == nil {
-		log.Debug("Defaulted handler to EchoHandler.")
-		cs.handler = handler.EchoHandler{}
+		panic("No handler is configured!")
 	}
 
 	chatInst := cs.getChat(ctx)

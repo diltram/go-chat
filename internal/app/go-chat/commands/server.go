@@ -29,7 +29,7 @@ func OnServer(conf config.Configuration) error {
 	ctx := context.NewContext()
 	ctx.SetAttribute("chat", chat)
 
-	srv := server.NewServerHandler(addr, handler.NewChatHandler(), ctx)
+	srv := server.NewServer(addr, handler.NewChatHandler(), ctx)
 	if err := srv.ListenAndServe(); nil != err {
 		panic(err)
 	}
