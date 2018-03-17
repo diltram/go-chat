@@ -17,7 +17,7 @@ type Notification struct {
 // It includes all information like date when message was sent and who send
 // message.
 func (n *Notification) String() string {
-	return fmt.Sprintf("%s | %s", n.date.Format("03/2/2006 15:04:05"), n.text)
+	return fmt.Sprintf("%s | %s\r\n", n.date.Format("03/2/2006 15:04:05"), n.text)
 }
 
 // NewMessage generates a message with information about the user, content and

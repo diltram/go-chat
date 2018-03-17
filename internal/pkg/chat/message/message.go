@@ -18,7 +18,7 @@ type Message struct {
 // It includes all information like date when message was sent and who send
 // message.
 func (m *Message) String() string {
-	return fmt.Sprintf("%s | %s - %s", m.date.Format("03/2/2006 15:04:05"), m.sender.Name(), m.text)
+	return fmt.Sprintf("%s | %s - %s\r\n", m.date.Format("03/2/2006 15:04:05"), m.sender.Name(), m.text)
 }
 
 // NewMessage generates a message with information about the user, content and
