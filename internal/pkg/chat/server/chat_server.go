@@ -122,7 +122,7 @@ func (cs *ChatServer) Handle(ctx context.Context, c net.Conn) {
 	}
 
 	chatInst := cs.getChat(ctx)
-	defaultChannel := chatInst.Channels()["default"]
+	defaultChannel := chatInst.Channels()[channel.DefaultChannelName]
 	usrCtx := cs.getUserCtx(ctx, c, defaultChannel)
 
 	writer := c.(io.Writer)
@@ -133,7 +133,12 @@ func (cs *ChatServer) Handle(ctx context.Context, c net.Conn) {
 	// User disconnected. Send info about that
 	log.Debugf("Closing connection from %q.", c.RemoteAddr())
 	usrCtx.Channel().DelUser(usrCtx.User())
-	msg := usrCtx.Channel().AddNotification(usrCtx.User(), fmt.Sprintf("User %s disconnected from channel %s\r\n", usrCtx.User().Name(), usrCtx.Channel().Name()))
+	msg := usrCtx.Channel().AddNotification(
+		usrCtx.User(),
+		fmt.Sprintf(
+			"User %s disconnected from channel %s\r\n",
+			usrCtx.User().Name(),
+			usrCtx.Channel().Name()))
 	usrCtx.Channel().SendMessage(usrCtx.User(), msg)
 }
 

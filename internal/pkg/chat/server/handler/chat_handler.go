@@ -1,5 +1,3 @@
-//@TODO: Sending just a space crashes the server
-
 package handler
 
 import (

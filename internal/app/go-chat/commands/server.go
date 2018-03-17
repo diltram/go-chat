@@ -23,7 +23,7 @@ func OnServer(conf config.Configuration) error {
 	log.Info("Starting telnet server on ", addr)
 
 	chat := chat.NewChat()
-	chann := channel.NewChannel("default")
+	chann := channel.NewChannel(channel.DefaultChannelName)
 	chat.AddChannel(chann)
 
 	ctx := context.NewContext()

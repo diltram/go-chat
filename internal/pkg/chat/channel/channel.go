@@ -12,6 +12,10 @@ import (
 	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
+const (
+	DefaultChannelName = "default"
+)
+
 // Call represents a function which can be provided to Call method.
 // When iterating over all users it can execute some specific operation e.g.
 // send new message.
