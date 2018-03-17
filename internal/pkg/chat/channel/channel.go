@@ -19,7 +19,7 @@ const (
 // Call represents a function which can be provided to Call method.
 // When iterating over all users it can execute some specific operation e.g.
 // send new message.
-type Call func(net.Conn, *user.User)
+type Call func(*user.User)
 
 // Channel provides base functionality of a server.
 // It keeps track of messages sent and all users currently connected to server.
@@ -78,8 +78,8 @@ func (c *Channel) Call(fn Call) {
 	defer c.mutex.RUnlock()
 
 	log.Debugf("Executing call on %d users", len(c.users))
-	for conn, user := range c.users {
-		fn(conn, user)
+	for _, user := range c.users {
+		fn(user)
 	}
 }
 
@@ -107,7 +107,7 @@ func (c *Channel) addStringer(msg message.Stringer) {
 }
 
 func (c *Channel) SendMessage(sender *user.User, msg message.Stringer) {
-	c.Call(func(n net.Conn, u *user.User) {
+	c.Call(func(u *user.User) {
 		if u != sender {
 			io.WriteString(u, msg.String())
 		}
