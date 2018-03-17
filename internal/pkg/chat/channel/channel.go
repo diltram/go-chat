@@ -47,6 +47,7 @@ func (c Channel) Name() string {
 
 // AddUser registers new user into specific chat.
 func (c *Channel) AddUser(user *user.User) {
+	log.Debugf("Joining user %s into a channel %s", user.Name(), c.Name())
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
@@ -55,6 +56,7 @@ func (c *Channel) AddUser(user *user.User) {
 
 // DelUser de-registers user from chat.
 func (c *Channel) DelUser(usr *user.User) {
+	log.Debugf("Deleting user %s from a channel %s", usr.Name(), c.Name())
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
@@ -107,8 +109,7 @@ func (c *Channel) addStringer(msg message.Stringer) {
 func (c *Channel) SendMessage(sender *user.User, msg message.Stringer) {
 	c.Call(func(n net.Conn, u *user.User) {
 		if u != sender {
-			w := n.(io.Writer)
-			io.WriteString(w, msg.String())
+			io.WriteString(u, msg.String())
 		}
 	})
 }
