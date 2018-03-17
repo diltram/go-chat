@@ -39,6 +39,13 @@ func (r *Registry) Command(key string) Command {
 	return cmd
 }
 
+func (r *Registry) Commands() map[string]Command {
+	r.mutex.RLock()
+	defer r.mutex.RUnlock()
+
+	return r.commands
+}
+
 // GetRegistry returns Registry singleton.
 //
 // That method is not thread safe so it's possible to have race conditions with
