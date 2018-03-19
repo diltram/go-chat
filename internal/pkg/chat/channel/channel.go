@@ -106,6 +106,8 @@ func (c *Channel) addStringer(msg message.Stringer) {
 	c.messages = append(c.messages, msg)
 }
 
+// SendMessage sends stringer to all the users on a channel.
+// It will not be send to a sender.
 func (c *Channel) SendMessage(sender *user.User, msg message.Stringer) {
 	c.Call(func(u *user.User) {
 		if u != sender {
