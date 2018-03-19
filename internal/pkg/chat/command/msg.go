@@ -23,10 +23,12 @@ func (cmd MsgCommand) Desc() string {
 	return ""
 }
 
+// Cmds returns nothing as it will be registered as default command.
 func (cmd MsgCommand) Cmds() []string {
 	return nil
 }
 
+// Call sends message to all the users on specific channel except sender.
 func (cmd MsgCommand) Call(ctx *usrctx.UserContext, fields []string, cmdLine *bytes.Buffer) {
 	ch := ctx.Channel()
 	usr := ctx.User()

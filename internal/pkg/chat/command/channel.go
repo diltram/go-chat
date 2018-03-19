@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/diltram/go-chat/internal/pkg/chat/channel"
 	"github.com/diltram/go-chat/internal/pkg/chat/context"
@@ -13,24 +12,34 @@ import (
 // ChannelCommand allows to change a channel.
 type ChannelCommand struct{}
 
+// Name returns a descriptive name of the command used for help.
 func (cmd ChannelCommand) Name() string {
 	return "Change channel"
 }
 
+// Desc will be displayed in help as complete description of command.
 func (cmd ChannelCommand) Desc() string {
 	return "Commands allow to change current channel into a new one."
 }
 
+// Cmds return a slice of names which can be used to call that method.
+// All of them will be mapped and user can use any of them to trigger
+// operation.
 func (cmd ChannelCommand) Cmds() []string {
 	return []string{"/channel", "/chan", "/ch"}
 }
 
+// Call executes a process of change of channel.
+// When an empty command specified it will show error that channel can't be
+// changed.
+// It will trigger additional messages on both channels informing people that
+// user left/joined a channel.
 func (cmd ChannelCommand) Call(ctx *usrctx.UserContext, fields []string, cmdLine *bytes.Buffer) {
 	chatInst := ctx.Chat()
 	usr := ctx.User()
 	chann := ctx.Channel()
 
-	name := strings.TrimLeft(cmdLine.String(), fields[0]+" ")
+	name := RemoveCmd(fields[0], cmdLine.String())
 	if len(name) == 0 {
 		io.WriteString(usr, "You need to specify a channel...\r\n")
 		return

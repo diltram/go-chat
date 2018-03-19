@@ -4,52 +4,43 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"sort"
 	"strings"
 
 	"github.com/diltram/go-chat/internal/pkg/chat/context"
 )
 
-// HelpCommand prints help with all commands listed.
+// HelpCommand prints help for all registered commands.
+// It loads commands from commands registry so whenever new command will be
+// created and registered it will be automatically updated here.
 type HelpCommand struct{}
 
-// Name returns just empty string.
+// Name informs that command prints help.
 func (cmd HelpCommand) Name() string {
 	return "Help"
 }
 
-// Desc returns just empty string.
+// Desc returns longer description of the command.
 func (cmd HelpCommand) Desc() string {
 	return "Print out that help"
 }
 
+// Cmds returns a list of names which can be used to access help.
 func (cmd HelpCommand) Cmds() []string {
 	return []string{"/help", "/h"}
 }
 
+// Call loads all registered commands from commands registry.
+// After sorting them by name it prints names, descriptions and access names of
+// all commands.
 func (cmd HelpCommand) Call(ctx *usrctx.UserContext, fields []string, cmdLine *bytes.Buffer) {
-	unqCmds := make(map[string]Command)
-	unqNames := make([]string, 3)
 	usr := ctx.User()
-	commands := GetRegistry().Commands()
+	commands := GetRegistry().UniqueCommands()
 
 	io.WriteString(usr, "\r\nHelp:\r\n")
 	io.WriteString(usr, "--------------------\r\n")
-
-	for _, v := range commands {
-		if _, ok := unqCmds[v.Name()]; !ok {
-			unqNames = append(unqNames, v.Name())
-			unqCmds[v.Name()] = v
-		}
-	}
-
-	sort.Strings(unqNames)
-	for _, name := range unqNames {
-		cmd, ok := unqCmds[name]
-		if ok {
-			line := fmt.Sprintf("%20s %15s %s\r\n", strings.Join(cmd.Cmds(), ", "), cmd.Name(), cmd.Desc())
-			io.WriteString(usr, line)
-		}
+	for _, cmd := range commands {
+		line := fmt.Sprintf("%20s %15s %s\r\n", strings.Join(cmd.Cmds(), ", "), cmd.Name(), cmd.Desc())
+		io.WriteString(usr, line)
 	}
 }
 

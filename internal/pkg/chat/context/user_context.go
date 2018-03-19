@@ -7,6 +7,12 @@ import (
 	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
+func NewUserContext() *UserContext {
+	return &UserContext{
+		context.NewContext(),
+	}
+}
+
 type UserContext struct {
 	context.Context
 }
