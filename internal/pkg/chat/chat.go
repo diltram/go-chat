@@ -63,6 +63,7 @@ func (c *Chat) SetExitMessage(msg string) {
 	c.exitMessage = msg
 }
 
+// AddChannel registers new channel on the server.
 func (c *Chat) AddChannel(chann *channel.Channel) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
@@ -70,6 +71,7 @@ func (c *Chat) AddChannel(chann *channel.Channel) {
 	c.channels[chann.Name()] = chann
 }
 
+// Channels returns a map of all channels registered on the server.
 func (c *Chat) Channels() map[string]*channel.Channel {
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()

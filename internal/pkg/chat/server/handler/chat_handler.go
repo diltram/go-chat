@@ -19,16 +19,24 @@ const (
 	lineEnd                = "\r\n"
 )
 
+// ChatHandler is a base handler for serving a chat.
 type ChatHandler struct {
 	ExitCommandName string
 }
 
+// NewChatHandler creates handler which can be used on server.
 func NewChatHandler() handler.Handler {
 	return &ChatHandler{
 		ExitCommandName: defaultExitCommandName,
 	}
 }
 
+// Serve is method which processes all requests from user.
+// That method is executed multiple times in threads to serve all the users.
+// Context provided here need to contain all the information:
+// 		- user
+// 		- chat
+// 		- channel
 func (h *ChatHandler) Serve(ctx context.Context) {
 	buf := make([]byte, 50)
 	cmdLine := new(bytes.Buffer)
