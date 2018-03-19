@@ -75,3 +75,21 @@ func TestDoubleSet(t *testing.T) {
 		t.Error("Loading attribute should be successful")
 	}
 }
+
+func TestClone(t *testing.T) {
+	value := "String"
+	name := "string"
+
+	ctx := NewContext()
+	ctx.SetAttribute(name, value)
+
+	ctxClone := ctx.Clone()
+	attr, err := ctxClone.Attribute(name)
+	if attr != value {
+		t.Errorf("Clone(): expected: %s, actual: %s", value, attr)
+	}
+
+	if err != nil {
+		t.Error("Loading attribute should be successful")
+	}
+}

@@ -7,16 +7,24 @@ import (
 	"github.com/diltram/go-chat/internal/pkg/server/user"
 )
 
+// NewUserContext creates a context with access to special fields based on the
+// attributes.
 func NewUserContext() *UserContext {
 	return &UserContext{
 		context.NewContext(),
 	}
 }
 
+// UserContext is a special context wrapper.
+// That context provides direct access to Chat, User and Channel attributes.
+// It panics whenever any of them is no available.
 type UserContext struct {
 	context.Context
 }
 
+// Chat provides access to attribute.
+// It converts default interface{} return into a Chat struct.
+// It panics when attribute is not available or when it has a wrong type.
 func (ctx UserContext) Chat() *chat.Chat {
 	attr, err := ctx.Attribute("chat")
 	if err != nil {
@@ -31,6 +39,9 @@ func (ctx UserContext) Chat() *chat.Chat {
 	return chatInst
 }
 
+// User provides access to attribute.
+// It converts default interface{} return into a User struct.
+// It panics when attribute is not available or when it has a wrong type.
 func (ctx *UserContext) User() *user.User {
 	attr, err := ctx.Attribute("user")
 
@@ -46,6 +57,9 @@ func (ctx *UserContext) User() *user.User {
 	return usr
 }
 
+// Channel provides access to attribute.
+// It converts default interface{} return into a Channel struct.
+// It panics when attribute is not available or when it has a wrong type.
 func (ctx *UserContext) Channel() *channel.Channel {
 	attr, err := ctx.Attribute("channel")
 
